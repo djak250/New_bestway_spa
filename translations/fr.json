@@ -1,0 +1,52 @@
+{
+  "title": "Spa Bestway",
+  "config": {
+    "step": {
+      "user": {
+        "title": "Connexion au spa Bestway",
+        "description": "Saisissez vos identifiants API pour connecter votre spa Bestway.",
+        "data": {
+          "device_name": "Nom du périphérique",
+          "token": "Jeton API",
+          "device_id": "ID du périphérique",
+          "product_id": "ID du produit",
+          "push_type": "Type de push (fcm ou apns)",
+          "client_id": "Client ID (optionnel)",
+          "registration_id": "Registration ID (optionnel)"
+        }
+      }
+    },
+    "error": {
+      "invalid_auth": "Authentification invalide",
+      "cannot_connect": "Connexion impossible",
+      "unknown": "Erreur inconnue"
+    },
+    "abort": {
+      "already_configured": "Ce spa est déjà configuré."
+    }
+  },
+  "entity": {
+    "switch": {
+      "power_state": { "name": "Alimentation du spa" },
+      "filter_state": { "name": "Filtration" },
+      "heater_state": { "name": "Chauffage" },
+      "wave_state": { "name": "Bulles / Vague" }
+    },
+    "number": {
+      "temperature_setting": { "name": "Température cible" }
+    },
+    "sensor": {
+      "water_temperature": { "name": "Température de l'eau" },
+      "is_online": { "name": "Statut de connexion" },
+      "temperature_unit": { "name": "Unité de température" },
+      "warning": { "name": "Avertissement" },
+      "error_code": { "name": "Code d'erreur" },
+      "hydrojet_state": { "name": "Hydrojet" },
+      "ConnectType": { "name": "Type de connexion" },
+      "wifivertion": { "name": "Version WiFi" },
+      "otastatus": { "name": "Statut OTA" },
+      "mcuversion": { "name": "Version MCU" },
+      "trdversion": { "name": "Version TRD" }
+    }
+  }
+}
