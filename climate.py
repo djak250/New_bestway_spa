@@ -47,3 +47,6 @@ class BestwaySpaThermostat(CoordinatorEntity, ClimateEntity):
         elif hvac_mode == HVACMode.OFF:
             await self._api.set_state("heater_state", 0)
         await self.coordinator.async_request_refresh()
+
+# Make sure Home Assistant detects the setup function
+__all__ = ["async_setup_entry"]
