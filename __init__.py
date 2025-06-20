@@ -9,8 +9,7 @@ import logging
 
 _LOGGER = logging.getLogger(__name__)
 
-PLATFORMS = ["switch", "number", "sensor"]
-
+PLATFORMS = ["switch", "number", "sensor", "climate"]
 async def async_setup_entry(hass: HomeAssistant, entry: ConfigEntry) -> bool:
     """Set up Bestway Spa from a config entry."""
 
