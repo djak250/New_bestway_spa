@@ -33,8 +33,8 @@ This Home Assistant integration allows you to control your Bestway SmartHub-enab
 | `visitor_id`     | ✅       | From intercepted app traffic               |
 | `registration_id`| ✅       | Same as above                              |
 | `client_id`      | ❌       | Only for Android (`push_type = fcm`)       |
-| `device_id`      | ❌       | Needed to control the spa                  |
-| `product_id`     | ❌       | Needed to control the spa                  |
+| `device_id`      | ✅       | Needed to control the spa                  |
+| `product_id`     | ✅       | Needed to control the spa                  |
 | `push_type`      | ❌       | `fcm` (Android) or `apns` (iOS), default `fcm` |
 
 ---
