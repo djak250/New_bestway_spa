@@ -1,8 +1,8 @@
 {
   "domain": "new_bestway_spa",
   "name": "Bestway Smart Spa",
-  "documentation": "https://github.com/yourname/new_bestway_spa",
-  "codeowners": ["@yourgithubusername"],
+  "documentation": "https://github.com/M1R4G376/New_bestway_spa.git",
+  "codeowners": ["@M1R4G376"],
   "dependencies": [],
   "version": "1.0.0",
   "config_flow": true,
