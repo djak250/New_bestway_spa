@@ -1,8 +1,10 @@
 from homeassistant.components.climate import ClimateEntity
 from homeassistant.components.climate.const import ClimateEntityFeature, HVACMode
-from homeassistant.const import TEMP_CELSIUS
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from .const import DOMAIN
+import logging
+
+_LOGGER = logging.getLogger(__name__)
 
 async def async_setup_entry(hass, entry, async_add_entities):
     data = hass.data[DOMAIN][entry.entry_id]
@@ -13,7 +15,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
 class BestwaySpaThermostat(CoordinatorEntity, ClimateEntity):
     _attr_hvac_modes = [HVACMode.OFF, HVACMode.HEAT]
     _attr_supported_features = ClimateEntityFeature.TARGET_TEMPERATURE
-    _attr_temperature_unit = TEMP_CELSIUS
+    _attr_temperature_unit = "°C"
     _attr_min_temp = 20
     _attr_max_temp = 40
 
@@ -33,7 +35,17 @@ class BestwaySpaThermostat(CoordinatorEntity, ClimateEntity):
 
     @property
     def hvac_mode(self):
-        return HVACMode.HEAT if self.coordinator.data.get("heater_state") else HVACMode.OFF
+        heater_state = self.coordinator.data.get("heater_state")
+        power_state = self.coordinator.data.get("power_state")
+        _LOGGER.debug(f"Heater state: {heater_state}, Power state: {power_state}")
+        
+        if heater_state is None or power_state != 1:
+            return HVACMode.OFF
+        
+        # Based on API data: heater_state 4,5,6 = actively heating phases
+        is_heating = heater_state in [4, 5, 6]
+        _LOGGER.debug(f"Heater is actively heating (state {heater_state}): {is_heating}")
+        return HVACMode.HEAT if is_heating else HVACMode.OFF
 
     async def async_set_temperature(self, **kwargs):
         temperature = kwargs.get("temperature")

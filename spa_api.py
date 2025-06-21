@@ -109,9 +109,28 @@ class BestwaySpaAPI:
             ssl=False
         ) as resp:
             data = await resp.json()
-            _LOGGER.debug("get_status response: %s", data)
+            _LOGGER.debug("Full API response: %s", data)
+            
+            # Extract the actual device state from the nested structure
+            raw_data = data.get("data", {})
+            _LOGGER.debug("Raw data from API: %s", raw_data)
+            
+            # The device state is likely nested in state.reported or similar
+            if "state" in raw_data:
+                if "reported" in raw_data["state"]:
+                    device_state = raw_data["state"]["reported"]
+                    _LOGGER.debug("Found reported state: %s", device_state)
+                    return device_state
+                elif "desired" in raw_data["state"]:
+                    device_state = raw_data["state"]["desired"]
+                    _LOGGER.debug("Found desired state: %s", device_state)
+                    return device_state
+                else:
+                    _LOGGER.debug("Found state object: %s", raw_data["state"])
+                    return raw_data["state"]
 
-            return data.get("data", {})
+            _LOGGER.warning("Could not find nested state, returning raw data: %s", raw_data)
+            return raw_data
 
     async def set_state(self, key, value):
         if isinstance(value, bool):

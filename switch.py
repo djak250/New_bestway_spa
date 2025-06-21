@@ -31,6 +31,10 @@ class BestwaySpaSwitch(CoordinatorEntity, SwitchEntity):
         if self._key == "filter_state":
             # API returns 2 when filter is active
             return self.coordinator.data.get("filter_state") == 2
+        elif self._key == "heater_state":
+            # API returns 4,5,6 when heater is in various heating phases
+            heater_state = self.coordinator.data.get("heater_state")
+            return heater_state in [4, 5, 6]
         return self.coordinator.data.get(self._key) == 1
 
     async def async_turn_on(self, **kwargs):
