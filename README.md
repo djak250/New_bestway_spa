@@ -15,8 +15,8 @@ This Home Assistant integration allows you to control your Bestway SmartHub-enab
 
 ## Required Info
 
-- **visitor_id**: Captured from the Bestway app using a proxy (e.g. Proxyman or HTTP Toolkit)
-- **registration_id**: Also from the app proxy traffic
+- **visitor_id**: Captured from the Bestway app using a proxy (e.g. Proxyman or HTTP Toolkit). Use the **Share the device** option to generate a QR-Code from the Bestway SmartSpa app in order to get visitor_id. Found in API calls `/api/enduser/visitor`   
+- **registration_id**: Also from the app proxy traffic. Found in API calls `/api/enduser/visitor`   
 - **client_id**: Only required if using an Android device (`push_type: fcm`)
 - **device_id** and **product_id**: Found in API calls like `/api/enduser/home/room/devices`
 - **push_type**: `"fcm"` for Android, `"apns"` for iOS
