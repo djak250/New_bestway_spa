@@ -1,6 +1,7 @@
 from homeassistant.components.number import NumberEntity
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from .const import DOMAIN
+import asyncio
 
 async def async_setup_entry(hass, entry, async_add_entities):
     data = hass.data[DOMAIN][entry.entry_id]
@@ -27,4 +28,5 @@ class BestwaySpaTargetTemperature(CoordinatorEntity, NumberEntity):
 
     async def async_set_native_value(self, value: float):
         await self._api.set_state("temperature_setting", value)
+        await asyncio.sleep(2)
         await self.coordinator.async_request_refresh()
