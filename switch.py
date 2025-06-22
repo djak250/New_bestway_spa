@@ -1,6 +1,7 @@
 from homeassistant.components.switch import SwitchEntity
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from .const import DOMAIN
+import asyncio
 
 SWITCH_TYPES = [
     ("power_state", "Spa Power"),
@@ -39,8 +40,10 @@ class BestwaySpaSwitch(CoordinatorEntity, SwitchEntity):
 
     async def async_turn_on(self, **kwargs):
         await self._api.set_state(self._key, 1)
+        await asyncio.sleep(2)
         await self.coordinator.async_request_refresh()
 
     async def async_turn_off(self, **kwargs):
         await self._api.set_state(self._key, 0)
+        await asyncio.sleep(2)
         await self.coordinator.async_request_refresh()
