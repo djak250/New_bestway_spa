@@ -3,6 +3,7 @@ from homeassistant.components.climate.const import ClimateEntityFeature, HVACMod
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from .const import DOMAIN
 import logging
+import asyncio
 
 _LOGGER = logging.getLogger(__name__)
 
@@ -51,6 +52,7 @@ class BestwaySpaThermostat(CoordinatorEntity, ClimateEntity):
         temperature = kwargs.get("temperature")
         if temperature is not None:
             await self._api.set_state("temperature_setting", int(temperature))
+            await asyncio.sleep(2)
             await self.coordinator.async_request_refresh()
 
     async def async_set_hvac_mode(self, hvac_mode):
@@ -58,7 +60,8 @@ class BestwaySpaThermostat(CoordinatorEntity, ClimateEntity):
             await self._api.set_state("heater_state", 1)
         elif hvac_mode == HVACMode.OFF:
             await self._api.set_state("heater_state", 0)
-        await self.coordinator.async_request_refresh()
+            await asyncio.sleep(2)
+            await self.coordinator.async_request_refresh()
 
 # Make sure Home Assistant detects the setup function
 __all__ = ["async_setup_entry"]
