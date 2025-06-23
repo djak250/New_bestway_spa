@@ -129,7 +129,7 @@ class BestwaySpaAPI:
                     _LOGGER.debug("Found state object: %s", raw_data["state"])
                     return raw_data["state"]
 
-            _LOGGER.warning("Could not find nested state, returning raw data: %s", raw_data)
+            _LOGGER.debug("Could not find nested state, returning raw data: %s", raw_data)
             return raw_data
 
     async def set_state(self, key, value):
