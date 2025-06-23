@@ -34,6 +34,9 @@ class BestwaySpaSensor(CoordinatorEntity, SensorEntity):
 
     @property
     def native_value(self):
+        if self._key == "temperature_unit":
+            raw = self.coordinator.data.get("temperature_unit", 1)
+            return "°F" if raw == 0 else "°C" 
         return self.coordinator.data.get(self._key)
 
     @property
