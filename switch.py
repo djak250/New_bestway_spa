@@ -36,7 +36,27 @@ class BestwaySpaSwitch(CoordinatorEntity, SwitchEntity):
             # API returns 4,5,6 when heater is in various heating phases
             heater_state = self.coordinator.data.get("heater_state")
             return heater_state in [4, 5, 6]
-        return self.coordinator.data.get(self._key) == 1
+        elif self._key == "wave_state":
+            return self.coordinator.data.get("wave_state", 0) != 0
+        else:
+            return self.coordinator.data.get(self._key) == 1
+            
+    @property
+    def extra_state_attributes(self):
+        if self._key == "wave_state":
+            niveau = self.coordinator.data.get("wave_state", 0)
+            if niveau == 0:
+                mode = "off"
+            elif niveau == 100:
+                mode = "L1"
+            else:
+                mode = "L2"
+            return {
+                "niveau_bulles": mode,
+                "valeur_wave_state": niveau
+            }
+        return {}
+
 
     async def async_turn_on(self, **kwargs):
         await self._api.set_state(self._key, 1)
