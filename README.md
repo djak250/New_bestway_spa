@@ -42,6 +42,7 @@ This Home Assistant integration allows you to control your Bestway SmartHub-enab
 ## API Notes
 
 - `filter_state` returns `2` when active, `0` when off — the integration handles this automatically.
+- `select` gives the possibility to choose  the bubble/wave mode OFF/L1/L2 (not available from the official app)
 - To **turn on** any feature, the integration sends `1`. To **turn off**, it sends `0`.
 - All values are polled from `/api/device/thing_shadow/`
 
