@@ -43,8 +43,8 @@ class BestwaySpaThermostat(CoordinatorEntity, ClimateEntity):
         if heater_state is None or power_state != 1:
             return HVACMode.OFF
         
-        # Based on API data: heater_state 4,5,6 = actively heating phases
-        is_heating = heater_state in [4, 5, 6]
+        # Based on API data: heater_state 2,4,5,6 = actively heating phases
+        is_heating = heater_state != 0
         _LOGGER.debug(f"Heater is actively heating (state {heater_state}): {is_heating}")
         return HVACMode.HEAT if is_heating else HVACMode.OFF
 
