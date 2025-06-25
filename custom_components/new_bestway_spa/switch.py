@@ -33,9 +33,9 @@ class BestwaySpaSwitch(CoordinatorEntity, SwitchEntity):
             # API returns 2 when filter is active
             return self.coordinator.data.get("filter_state") == 2
         elif self._key == "heater_state":
-            # API returns 4,5,6 when heater is in various heating phases
+            # API returns 2,4,5,6 when heater is in various heating phases
             heater_state = self.coordinator.data.get("heater_state")
-            return heater_state in [4, 5, 6]
+            return heater_state != 0
         elif self._key == "wave_state":
             return self.coordinator.data.get("wave_state", 0) != 0
         else:
