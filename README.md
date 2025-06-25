@@ -13,15 +13,98 @@ This Home Assistant integration allows you to control your Bestway SmartHub-enab
 
 ---
 
-## Required Info
+## Prerequisites
 
-- **visitor_id**: Captured from the Bestway app using a proxy (e.g. Proxyman or HTTP Toolkit). Use the **Share the device** option to generate a QR-Code from the Bestway SmartSpa app in order to get visitor_id. Found in API calls `/api/enduser/visitor`   
-- **registration_id**: Also from the app proxy traffic. Found in API calls `/api/enduser/visitor`   
-- **client_id**: Only required if using an Android device (`push_type: fcm`)
-- **device_id** and **product_id**: Found in API calls like `/api/enduser/home/room/devices`
-- **push_type**: `"fcm"` for Android, `"apns"` for iOS
+### Required Equipment
+- A **PC or Mac** with [Charles Proxy](https://www.charlesproxy.com/download/) installed
+- Two smartphones (Android or iOS):
+  - **Phone A**: with the Bestway Smart Hub app installed and already connected to your spa (used to scan the QR code)
+  - **Phone B**: used to capture traffic through Charles Proxy (the SSL certificate will be installed on this device)
 
- The integration automatically authenticates with the Bestway API and handles token creation internally.
+### Network
+- PC and both smartphones must be connected to the **same Wi-Fi network**
+
+---
+
+## Step 1 – Setup Charles Proxy
+
+1. Launch **Charles Proxy** on your PC
+2. Go to `Proxy > Proxy Settings` and note the HTTP port (default: `8888`)
+3. Go to `Help > SSL Proxying > Install Charles Root Certificate` (install it on your PC)
+4. Then go to `Help > SSL Proxying > Install Charles Root Certificate on a Mobile Device or Remote Browser` to get your PC's IP address
+
+---
+
+## Step 2 – Configure Phone B
+
+### A. Set Wi-Fi Proxy
+- On **Phone B**, go to Wi-Fi settings
+- Long press the connected network > Modify > Advanced options
+- Set Proxy to **Manual**:
+  - **Proxy host**: your PC’s IP address
+  - **Port**: `8888`
+
+### B. Install SSL Certificate
+> Required to decrypt HTTPS traffic
+
+#### Android (to be confirmed)
+- Visit `http://charlesproxy.com/getssl` on Phone B
+- Download the certificate
+- Install it: `Settings > Security > Encryption & credentials > Install from storage`
+
+#### iOS
+- Open Safari: [https://chls.pro/ssl](https://chls.pro/ssl)
+- Accept and install the profile
+- Go to: `Settings > General > VPN & Device Management > Charles Proxy CA`
+- Enable in: `Settings > General > About > Certificate Trust Settings`
+
+---
+
+## Step 3 – Enable SSL Proxying
+
+In Charles:
+1. Go to `Proxy > SSL Proxying Settings`
+2. Click **Add**
+3. Set:
+   - Host: `*`
+   - Port: `443`
+
+---
+
+## Step 4 – Capture the Data
+
+1. Close the Bestway Smart Hub app on **Phone B**
+2. Start recording in Charles (click the **●** button)
+3. Open the Bestway Smart Hub app again
+4. Select **United Kingdom** region and scan the QR code
+5. Watch for requests like `thing_shadow`, `command`, or to `api.bestwaycorp`
+
+---
+
+## Step 5 – Retrieve Credentials
+
+1. Look for a **POST** request to `/enduser/visitor`:
+   - [https://smarthub-eu.bestwaycorp.com](https://smarthub-eu.bestwaycorp.com)
+2. Open it and check **Request > JSON** or **Text**
+
+### Useful credentials to extract:
+- `visitor_id`
+- `client_id` (for Android)
+- `device_id`
+- `product_id`
+
+### Additional:
+- `registration_id` and `client_id` can be found in `/api/enduser/visitor`
+- `device_id` and `product_id` may be in `/api/enduser/home/room/devices`
+
+---
+
+## Cleanup
+
+- Disable the proxy on Phone B
+- Remove the Charles SSL certificate if no longer needed
+
+
 
 ---
 
