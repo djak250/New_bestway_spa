@@ -18,7 +18,7 @@ This Home Assistant integration allows you to control your Bestway SmartHub-enab
 ### Required Equipment
 - A **PC or Mac** with [Charles Proxy](https://www.charlesproxy.com/download/) installed
 - Two smartphones (Android or iOS):
-  - **Phone A**: with the Bestway Smart Hub app installed and already connected to your spa (used to scan the QR code)
+  - **Phone A**: with the Bestway Smart Hub app installed and already connected to your spa (used to share the QR code)
   - **Phone B**: used to capture traffic through Charles Proxy (the SSL certificate will be installed on this device)
 
 ### Network
