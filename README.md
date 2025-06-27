@@ -31,7 +31,6 @@ This Home Assistant integration allows you to control your Bestway SmartHub-enab
 1. Launch **Charles Proxy** on your PC
 2. Go to `Proxy > Proxy Settings` and note the HTTP port (default: `8888`)
 3. Go to `Help > SSL Proxying > Install Charles Root Certificate` (install it on your PC)
-4. Then go to `Help > SSL Proxying > Install Charles Root Certificate on a Mobile Device or Remote Browser` to get your PC's IP address
 
 ---
 
