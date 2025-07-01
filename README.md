@@ -140,6 +140,7 @@ In Charles:
 ---
 
 ## Example Lovelace Card
+![image](https://github.com/user-attachments/assets/e551d76e-e72a-432e-aec0-8da2fa5e751a)
 
 ```yaml
 type: vertical-stack
