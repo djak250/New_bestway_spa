@@ -142,18 +142,53 @@ In Charles:
 ## Example Lovelace Card
 
 ```yaml
-type: entities
-title: Spa Bestway
-entities:
-  - switch.spa_bestway_spa_power
-  - switch.spa_bestway_filter
-  - switch.spa_bestway_heater
-  - switch.spa_bestway_bubbles_wave
-  - number.spa_bestway_target_temperature
-  - sensor.spa_bestway_water_temperature
-  - sensor.spa_bestway_warning
-  - sensor.spa_bestway_error_code
-  - sensor.spa_bestway_is_online
+type: vertical-stack
+cards:
+  - type: thermostat
+    entity: climate.spa_thermostat
+    name: Chauffage Spa
+  - type: horizontal-stack
+    cards:
+      - type: button
+        name: Chauffage ON
+        icon: mdi:fire
+        tap_action:
+          action: call-service
+          service: climate.set_hvac_mode
+          target:
+            entity_id: climate.spa_thermostat
+          data:
+            hvac_mode: heat
+      - type: button
+        name: Chauffage OFF
+        icon: mdi:power
+        tap_action:
+          action: call-service
+          service: climate.set_hvac_mode
+          target:
+            entity_id: climate.spa_thermostat
+          data:
+            hvac_mode: "off"
+  - type: history-graph
+    title: Historique Température Spa
+    hours_to_show: 24
+    refresh_interval: 60
+    entities:
+      - entity: sensor.spa_water_temperature
+  - type: entities
+    title: Commandes Spa
+    show_header_toggle: false
+    entities:
+      - entity: switch.spa_spa_power
+        name: Alimentation Spa
+        icon: mdi:power
+      - entity: switch.spa_filter
+        name: Filtration
+        icon: mdi:air-filter
+      - entity: select.spa_bulles
+        name: Bulles
+        icon: mdi:chart-bubble
+
 ```
 
 ## Disclaimer
