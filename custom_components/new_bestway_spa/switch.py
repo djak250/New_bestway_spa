@@ -7,6 +7,7 @@ SWITCH_TYPES = [
     ("power_state", "Spa Power"),
     ("filter_state", "Filter"),
     ("heater_state", "Heater"),
+    ("hydrojet_state", "Hydrojet"),
     ("wave_state", "Bubbles / Wave")
 ]
 
