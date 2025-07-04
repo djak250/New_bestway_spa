@@ -1,11 +1,11 @@
 {
   "domain": "new_bestway_spa",
   "name": "Bestway Smart Spa",
-  "version": "1.0.0",
   "codeowners": ["@M1R4G376"],
   "config_flow": true,
   "dependencies": [],
   "documentation": "https://github.com/M1R4G376/New_bestway_spa.git",
   "iot_class": "cloud_polling",
-  "requirements": []
+  "requirements": [],
+ "version": "1.1.3",
 }
