@@ -72,9 +72,11 @@ In Charles:
 
 ## Step 4 – Capture the Data
 
-1. Close the Bestway Smart Hub app on **Phone B**
-2. Start recording in Charles (click the **●** button)
-3. Open the Bestway Smart Hub app again
+# ⚠️*It is important to follow these steps in this direction in order to recover all the necessary identifiers.*
+
+1. Start recording in Charles (click the **●** button)
+2. Install the Bestway Smart Hub app on **Phone B**
+3. Open the Bestway Smart Hub
 4. Select **United Kingdom** region and scan the QR code
 5. Watch for requests like `thing_shadow`, `command`, or to `api.bestwaycorp`
 
