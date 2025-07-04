@@ -42,11 +42,11 @@
       "warning": { "name": "Avertissement" },
       "error_code": { "name": "Code d'erreur" },
       "hydrojet_state": { "name": "Hydrojet" },
-      "ConnectType": { "name": "Type de connexion" },
-      "wifivertion": { "name": "Version WiFi" },
-      "otastatus": { "name": "Statut OTA" },
-      "mcuversion": { "name": "Version MCU" },
-      "trdversion": { "name": "Version TRD" }
+      "connect_type": { "name": "Type de connexion" },
+      "wifi_vertion": { "name": "Version WiFi" },
+      "ota_status": { "name": "Statut OTA" },
+      "mcu_version": { "name": "Version MCU" },
+      "trd_version": { "name": "Version TRD" }
     }
   }
 }
