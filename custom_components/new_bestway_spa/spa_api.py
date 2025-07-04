@@ -3,10 +3,10 @@ import hashlib
 import random
 import string
 import time
-import json
 import aiohttp
 
 _LOGGER = logging.getLogger(__name__)
+
 
 async def authenticate(session, config):
     BASE_URL = "https://smarthub-eu.bestwaycorp.com"
@@ -110,27 +110,45 @@ class BestwaySpaAPI:
         ) as resp:
             data = await resp.json()
             _LOGGER.debug("Full API response: %s", data)
-            
-            # Extract the actual device state from the nested structure
+
             raw_data = data.get("data", {})
             _LOGGER.debug("Raw data from API: %s", raw_data)
-            
-            # The device state is likely nested in state.reported or similar
+
             if "state" in raw_data:
                 if "reported" in raw_data["state"]:
                     device_state = raw_data["state"]["reported"]
                     _LOGGER.debug("Found reported state: %s", device_state)
-                    return device_state
                 elif "desired" in raw_data["state"]:
                     device_state = raw_data["state"]["desired"]
                     _LOGGER.debug("Found desired state: %s", device_state)
-                    return device_state
                 else:
-                    _LOGGER.debug("Found state object: %s", raw_data["state"])
-                    return raw_data["state"]
+                    device_state = raw_data["state"]
+                    _LOGGER.debug("Found state object: %s", device_state)
+            else:
+                device_state = raw_data
 
-            _LOGGER.debug("Could not find nested state, returning raw data: %s", raw_data)
-            return raw_data
+            # ✅ Normalize keys to match sensor keys
+            mapped = {
+                "wifi_version": device_state.get("wifivertion"),
+                "ota_status": device_state.get("otastatus"),
+                "mcu_version": device_state.get("mcuversion"),
+                "trd_version": device_state.get("trdversion"),
+                "connect_type": device_state.get("ConnectType"),
+                "power_state": device_state.get("power_state"),
+                "heater_state": device_state.get("heater_state"),
+                "wave_state": device_state.get("wave_state"),
+                "filter_state": device_state.get("filter_state"),
+                "temperature_setting": device_state.get("temperature_setting"),
+                "temperature_unit": device_state.get("temperature_unit"),
+                "water_temperature": device_state.get("water_temperature"),
+                "warning": device_state.get("warning"),
+                "error_code": device_state.get("error_code"),
+                "hydrojet_state": device_state.get("hydrojet_state"),
+                "is_online": device_state.get("is_online")
+            }
+
+            _LOGGER.debug("Normalized data: %s", mapped)
+            return mapped
 
     async def set_state(self, key, value):
         if isinstance(value, bool):
