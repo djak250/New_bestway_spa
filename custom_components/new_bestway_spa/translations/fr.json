@@ -12,7 +12,7 @@
           "product_id": "ID du produit",
           "push_type": "Type de push (fcm ou apns)",
           "client_id": "Client ID (optionnel)",
-          "registration_id": "Registration ID (optionnel)"
+          "registration_id": "Registration ID"
         }
       }
     },
