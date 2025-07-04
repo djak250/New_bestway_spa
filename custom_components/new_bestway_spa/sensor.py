@@ -9,11 +9,11 @@ SENSOR_TYPES = [
     ("warning", "Warning", None),
     ("error_code", "Error Code", None),
     ("hydrojet_state", "Hydrojet", None),
-    ("ConnectType", "Connection Type", None),
-    ("wifivertion", "WiFi Version", None),
-    ("otastatus", "OTA Status", None),
-    ("mcuversion", "MCU Version", None),
-    ("trdversion", "TRD Version", None)
+    ("connect_type", "Connection Type", None),
+    ("wifi_vertion", "WiFi Version", None),
+    ("ota_status", "OTA Status", None),
+    ("mcu_version", "MCU Version", None),
+    ("trd_version", "TRD Version", None)
 ]
 
 async def async_setup_entry(hass, entry, async_add_entities):
