@@ -30,7 +30,7 @@ class BestwaySpaBubbleSelect(CoordinatorEntity, SelectEntity):
         self._attr_unique_id = f"{device_id}_bubble_mode"
         self._device_id = device_id
 
-    property
+    @property
     def device_info(self):
         return {
             "identifiers": {(DOMAIN, self._device_id)},
