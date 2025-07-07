@@ -11,7 +11,9 @@ async def async_setup_entry(hass, entry, async_add_entities):
     data = hass.data[DOMAIN][entry.entry_id]
     coordinator = data["coordinator"]
     api = data["api"]
-    async_add_entities([BestwaySpaThermostat(coordinator, api, entry.title)])
+    device_id = entry.title.lower().replace(' ', '_')
+    async_add_entities([BestwaySpaThermostat(coordinator, api, entry.title, device_id)])
+
 
 class BestwaySpaThermostat(CoordinatorEntity, ClimateEntity):
     _attr_hvac_modes = [HVACMode.OFF, HVACMode.HEAT]
@@ -20,11 +22,23 @@ class BestwaySpaThermostat(CoordinatorEntity, ClimateEntity):
     _attr_min_temp = 20
     _attr_max_temp = 40
 
-    def __init__(self, coordinator, api, title):
+    def __init__(self, coordinator, api, title, device_id):
         super().__init__(coordinator)
         self._api = api
         self._attr_name = f"{title} Thermostat"
-        self._attr_unique_id = f"{title.lower().replace(' ', '_')}_thermostat"
+        self._attr_unique_id = f"{device_id}_thermostat"
+        self._device_id = device_id
+
+    @property
+    def device_info(self):
+        return {
+            "identifiers": {(DOMAIN, self._device_id)},
+            "name": self._attr_name.split(" ")[0],  # lub np. self._device_id
+            "manufacturer": "Bestway",
+            "model": "Spa",
+            "sw_version": "1.0"
+        }
+
 
     @property
     def current_temperature(self):
@@ -63,5 +77,4 @@ class BestwaySpaThermostat(CoordinatorEntity, ClimateEntity):
             await asyncio.sleep(2)
             await self.coordinator.async_request_refresh()
 
-# Make sure Home Assistant detects the setup function
 __all__ = ["async_setup_entry"]
