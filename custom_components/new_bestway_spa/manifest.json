@@ -4,9 +4,9 @@
   "codeowners": ["@M1R4G376"],
   "config_flow": true,
   "dependencies": [],
-  "documentation": "https://github.com/M1R4G376/New_bestway_spa.git",
-  "iot_class": "cloud_polling",
+  "documentation": "https://github.com/M1R4G376/New_bestway_spa",
   "issue_tracker": "https://github.com/M1R4G376/New_bestway_spa/issues",
+  "iot_class": "cloud_polling",
   "requirements": [],
- "version": "1.2.0"
+  "version": "1.2.0"
 }
