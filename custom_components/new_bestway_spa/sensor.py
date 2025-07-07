@@ -31,6 +31,7 @@ class BestwaySpaSensor(CoordinatorEntity, SensorEntity):
         self._key = key
         self._attr_name = f"{title} {name}"
         self._attr_unique_id = f"{device_id}_{key}"
+        self._device_id = device_id
         self._attr_native_unit_of_measurement = unit
 
         # enable long-term statistics for water temperature
