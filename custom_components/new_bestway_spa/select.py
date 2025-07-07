@@ -14,7 +14,8 @@ async def async_setup_entry(hass, entry, async_add_entities):
     data = hass.data[DOMAIN][entry.entry_id]
     coordinator = data["coordinator"]
     api = data["api"]
-    async_add_entities([BestwaySpaBubbleSelect(coordinator, api, entry.title)])
+    device_id = entry.title.lower().replace(' ', '_')
+    async_add_entities([BestwaySpaBubbleSelect(coordinator, api, entry.title, device_id)])
 
 
 class BestwaySpaBubbleSelect(CoordinatorEntity, SelectEntity):
@@ -22,12 +23,23 @@ class BestwaySpaBubbleSelect(CoordinatorEntity, SelectEntity):
 
     _attr_options = OPTIONS
 
-    def __init__(self, coordinator, api, title):
+    def __init__(self, coordinator, api, title, device_id):
         super().__init__(coordinator)
         self._api = api
         self._attr_name = f"{title} Bulles"
-        self._attr_unique_id = f"{title.lower().replace(' ', '_')}_bubble_mode"
+        self._attr_unique_id = f"{device_id}_bubble_mode"
+        self._device_id = device_id
 
+    property
+    def device_info(self):
+        return {
+            "identifiers": {(DOMAIN, self._device_id)},
+            "name": self._attr_name.split(" ")[0],
+            "manufacturer": "Bestway",
+            "model": "Spa",
+            "sw_version": "1.0"
+        }
+        
     @property
     def current_option(self):
         """Return the current bubble mode based on wave_state."""
@@ -62,6 +74,4 @@ class BestwaySpaBubbleSelect(CoordinatorEntity, SelectEntity):
 
         await self.coordinator.async_request_refresh()
 
-
-# Pour que Home Assistant détecte bien ce fichier comme plateforme
 __all__ = ["async_setup_entry"]
