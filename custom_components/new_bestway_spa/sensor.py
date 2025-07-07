@@ -61,4 +61,4 @@ class BestwaySpaSensor(CoordinatorEntity, SensorEntity):
         if self._key == "water_temperature":
             unit_code = self.coordinator.data.get("temperature_unit", 1)
             return "°F" if unit_code == 0 else "°C"
-        return None
+        return self._attr_native_unit_of_measurement
