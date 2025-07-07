@@ -10,7 +10,7 @@ SENSOR_TYPES = [
     ("error_code", "Error Code", None),
     ("hydrojet_state", "Hydrojet", None),
     ("connect_type", "Connection Type", None),
-    ("wifi_vertion", "WiFi Version", None),
+    ("wifi_version", "WiFi Version", None),
     ("ota_status", "OTA Status", None),
     ("mcu_version", "MCU Version", None),
     ("trd_version", "TRD Version", None)
@@ -19,23 +19,34 @@ SENSOR_TYPES = [
 async def async_setup_entry(hass, entry, async_add_entities):
     data = hass.data[DOMAIN][entry.entry_id]
     coordinator = data["coordinator"]
+    device_id = entry.title.lower().replace(' ', '_')
     async_add_entities([
-        BestwaySpaSensor(coordinator, key, name, unit, entry.title)
+        BestwaySpaSensor(coordinator, key, name, unit, entry.title, device_id)
         for key, name, unit in SENSOR_TYPES
     ])
 
 class BestwaySpaSensor(CoordinatorEntity, SensorEntity):
-    def __init__(self, coordinator, key, name, unit, title):
+    def __init__(self, coordinator, key, name, unit, title, device_id):
         super().__init__(coordinator)
         self._key = key
         self._attr_name = f"{title} {name}"
-        self._attr_unique_id = f"{title.lower().replace(' ', '_')}_{key}"
+        self._attr_unique_id = f"{device_id}_{key}"
         self._attr_native_unit_of_measurement = unit
 
         # enable long-term statistics for water temperature
         if self._key == "water_temperature":
             self._attr_device_class = "temperature"
             self._attr_state_class = "measurement"
+
+    @property
+    def device_info(self):
+        return {
+            "identifiers": {(DOMAIN, self._device_id)},
+            "name": self._attr_name.split(" ")[0],  # lub np. self._device_id
+            "manufacturer": "Bestway",
+            "model": "Spa",
+            "sw_version": "1.0"
+        }
 
     @property
     def native_value(self):
