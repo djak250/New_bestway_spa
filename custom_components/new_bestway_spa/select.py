@@ -37,7 +37,7 @@ class BestwaySpaBubbleSelect(CoordinatorEntity, SelectEntity):
             "name": self._attr_name.split(" ")[0],
             "manufacturer": "Bestway",
             "model": "Spa",
-            "sw_version": "1.0"
+            "sw_version": self.hass.data[DOMAIN].get("manifest_version", "unknown")
         }
         
     @property
