@@ -31,7 +31,7 @@ class BestwaySpaTargetTemperature(CoordinatorEntity, NumberEntity):
             "name": self._attr_name.split(" ")[0],  # lub np. self._device_id
             "manufacturer": "Bestway",
             "model": "Spa",
-            "sw_version": "1.0"
+            "sw_version": self.hass.data[DOMAIN].get("manifest_version", "unknown")
         }
 
     @property
