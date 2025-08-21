@@ -7,8 +7,8 @@ async def async_setup_entry(hass, entry, async_add_entities):
     coordinator = hass.data[DOMAIN][entry.entry_id]["coordinator"]
     device_id = entry.title.lower().replace(' ', '_')
     async_add_entities([
-        ResetButton(hass, entry, "Reset Filter Date", "filter_last_change", device_id),
-        ResetButton(hass, entry, "Reset Chlorine Date", "chlorine_last_add", device_id),
+        ResetButton(coordinator, hass, entry, "Reset Filter Date", "filter_last_change", device_id),
+        ResetButton(coordinator, hass, entry, "Reset Chlorine Date", "chlorine_last_add", device_id),
     ])
 
 class ResetButton(CoordinatorEntity, ButtonEntity):
