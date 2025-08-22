@@ -42,9 +42,9 @@ class ResetButton(CoordinatorEntity, ButtonEntity):
         new_date = datetime.now().strftime("%Y-%m-%d")
         self._hass.data[DOMAIN][self._entry.entry_id][self._key] = new_date
 
-        self.coordinator.data = {
-            **self.coordinator.data,
-            self._key: new_date
-        }
+        data = dict(self._entry.data)
+        data[self._key] = new_date
+        self._hass.config_entries.async_update_entry(self._entry, data=data)
 
-        await self.coordinator.async_request_refresh()
+        self.coordinator.data[self._key] = new_date
+        self.coordinator.async_update_listeners()       
