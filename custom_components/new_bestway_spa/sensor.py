@@ -93,7 +93,7 @@ class DaysSinceSensor(CoordinatorEntity, SensorEntity):
 
     @property
     def native_value(self):
-        stored_date_str = self.coordinator.data.get(self._key)
+        stored_date_str = self._entry.data.get(self._key)
         if not stored_date_str:
             return None
         try:
