@@ -1,29 +1,40 @@
-name: Add release file for download in HA into release
+name: "Release"
 
 on:
   release:
-    types: [published]
+    types:
+      - "published"
 
-permissions:
-  contents: write 
+permissions: {}
 
 jobs:
   release:
-    name: Prepare release
-    runs-on: ubuntu-latest
+    name: "Release"
+    runs-on: "ubuntu-latest"
+    permissions:
+      id-token: write
+      contents: write
     steps:
-      - name: Download repo
-        uses: actions/checkout@v3
+      - name: "Checkout the repository"
+        uses: "actions/checkout@v4.2.2"
 
-      - name: Create zip file
+      - name: Adjust version number
+        shell: bash
         run: |
-          cd custom_components/new_bestway_spa
-          zip ../../new_bestway_spa.zip -r ./
-      - name: Upload zip to release
-        uses: svenstaro/upload-release-action@v2
+          version="${{ github.event.release.tag_name }}"
+          version="${version,,}"
+          version="${version#v}"
+          yq e -P -o=json \
+            -i ".version = \"${version}\"" \
+            "${{ github.workspace }}/custom_components/new_bestway_spa/manifest.json"
+
+      - name: "ZIP the integration directory"
+        shell: "bash"
+        run: |
+          cd "${{ github.workspace }}/custom_components/new_bestway_spa"
+          zip new_bestway_spa.zip -r ./
+
+      - name: "Upload the ZIP file to the release"
+        uses: "softprops/action-gh-release@v2.2.2"
         with:
-          repo_token: ${{ secrets.PAT_TOKEN }}
-          file: new_bestway_spa.zip
-          asset_name: new_bestway_spa.zip
-          tag: ${{ github.ref }}
-          overwrite: true
+          files: ${{ github.workspace }}/custom_components/new_bestway_spa/new_bestway_spa.zip
