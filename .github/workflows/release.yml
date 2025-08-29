@@ -13,11 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1️⃣ Checkout de la branche du tag
+      # Checkout de la branche du tag
       - name: Checkout repository
         uses: actions/checkout@v4.2.2
 
-      # 2️⃣ Extraire la version depuis le tag
+      # Extraire la version depuis le tag
       - name: Set version from tag
         id: vars
         run: |
@@ -25,14 +25,14 @@ jobs:
           VERSION="${TAG#v}"            # ex: 1.3.5
           echo "VERSION=$VERSION" >> $GITHUB_ENV
 
-      # 3️⃣ Mettre à jour le manifest.json
+      # Mettre à jour le manifest.json
       - name: Update manifest.json version
         run: |
           yq e -P -o=json \
             -i ".version = \"${VERSION}\"" \
             "custom_components/new_bestway_spa/manifest.json"
 
-      # 4️⃣ Commit & push la mise à jour dans le dépôt (optionnel)
+      # Commit & push la mise à jour dans le dépôt (optionnel)
       - name: Commit updated manifest.json
         run: |
           git config user.name "github-actions[bot]"
@@ -41,24 +41,24 @@ jobs:
           git commit -m "Update manifest.json version to ${VERSION}" || echo "No changes to commit"
           git push
 
-      # 5️⃣ Créer le zip de l’intégration
+      # Créer le zip de l’intégration
       - name: Zip integration
         run: |
           cd custom_components/new_bestway_spa
           zip -r "${GITHUB_WORKSPACE}/new_bestway_spa.zip" ./
 
-      # 6️⃣ Signer le zip avec Sigstore
+      # Signer le zip avec Sigstore
       - name: Sign zip
         uses: sigstore/gh-action-sigstore-python@v3.0.1
         with:
           inputs: ${{ github.workspace }}/new_bestway_spa.zip
 
-      # 7️⃣ Renommer la signature en .sig
+      # Renommer la signature en .sig
       - name: Rename signature
         run: |
           mv "${GITHUB_WORKSPACE}/new_bestway_spa.zip.sig" "${GITHUB_WORKSPACE}/new_bestway_spa.sig"
 
-      # 8️⃣ Créer la release et uploader les assets
+      # Créer la release et uploader les assets
       - name: Create GitHub release with assets
         uses: softprops/action-gh-release@v2.2.2
         with:
