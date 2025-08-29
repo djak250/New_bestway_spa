@@ -22,7 +22,7 @@ jobs:
       - name: Upload zip to release
         uses: svenstaro/upload-release-action@v2
         with:
-          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          repo_token: ${{ secrets.PAT_TOKEN }}
           file: new_bestway_spa.zip
           asset_name: new_bestway_spa.zip
           tag: ${{ github.ref }}
