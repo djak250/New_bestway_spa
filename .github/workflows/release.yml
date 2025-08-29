@@ -34,6 +34,11 @@ jobs:
           cd "${{ github.workspace }}/custom_components/new_bestway_spa"
           zip new_bestway_spa.zip -r ./
 
+      - name: Sign release package
+        uses: sigstore/gh-action-sigstore-python@v3.0.1
+        with:
+          inputs: ${{ github.workspace }}/custom_components/new_bestway_spa/new_bestway_spa.zip
+
       - name: "Upload the ZIP file to the release"
         uses: "softprops/action-gh-release@v2.2.2"
         with:
