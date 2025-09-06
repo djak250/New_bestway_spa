@@ -1,10 +1,11 @@
+from homeassistant.const import UnitOfTemperature, UnitOfTime
 from homeassistant.components.sensor import SensorEntity
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from datetime import datetime, date
 from .const import DOMAIN
 
 SENSOR_TYPES = [
-    ("water_temperature", "Water Temperature", "°C"),
+    ("water_temperature", "Water Temperature", UnitOfTemperature.CELSIUS),
     ("is_online", "Connection Status", None),
     ("temperature_unit", "Temperature Unit", None),
     ("warning", "Warning", None),
@@ -59,14 +60,14 @@ class BestwaySpaSensor(CoordinatorEntity, SensorEntity):
     def native_value(self):
         if self._key == "temperature_unit":
             raw = self.coordinator.data.get("temperature_unit", 1)
-            return "°F" if raw == 0 else "°C" 
+            return UnitOfTemperature.FAHRENHEIT if raw == 0 else UnitOfTemperature.CELSIUS
         return self.coordinator.data.get(self._key)
 
     @property
     def native_unit_of_measurement(self):
         if self._key == "water_temperature":
             unit_code = self.coordinator.data.get("temperature_unit", 1)
-            return "°F" if unit_code == 0 else "°C"
+            return UnitOfTemperature.FAHRENHEIT if unit_code == 0 else UnitOfTemperature.CELSIUS
         return self._attr_native_unit_of_measurement
 
 class DaysSinceSensor(CoordinatorEntity, SensorEntity):
@@ -77,7 +78,7 @@ class DaysSinceSensor(CoordinatorEntity, SensorEntity):
         self._key = key
         self._device_id = device_id
         self._attr_unique_id = f"{device_id}_{key}_days_since"
-        self._attr_native_unit_of_measurement = "days"
+        self._attr_native_unit_of_measurement = UnitOfTime.DAYS
         self._attr_device_class = "duration"
         self._attr_state_class = "total_increasing"
 

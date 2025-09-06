@@ -1,3 +1,4 @@
+from homeassistant.const import UnitOfTemperature
 from homeassistant.components.number import NumberEntity
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
 from .const import DOMAIN
@@ -22,7 +23,7 @@ class BestwaySpaTargetTemperature(CoordinatorEntity, NumberEntity):
         self._attr_native_min_value = 20.0
         self._attr_native_max_value = 40.0
         self._attr_native_step = 0.5
-        self._attr_native_unit_of_measurement = "°C"
+        self._attr_native_unit_of_measurement = UnitOfTemperature.CELSIUS
 
     @property
     def device_info(self):
@@ -37,6 +38,11 @@ class BestwaySpaTargetTemperature(CoordinatorEntity, NumberEntity):
     @property
     def native_value(self):
         return self.coordinator.data.get("temperature_setting")
+
+    @property
+    def native_unit_of_measurement(self):
+        unit_code = self.coordinator.data.get("temperature_unit", 1)
+        return UnitOfTemperature.FAHRENHEIT if unit_code == 0 else UnitOfTemperature.CELSIUS
 
     async def async_set_native_value(self, value: float):
         await self._api.set_state("temperature_setting", value)

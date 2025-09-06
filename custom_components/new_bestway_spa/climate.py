@@ -1,3 +1,4 @@
+from homeassistant.const import UnitOfTemperature
 from homeassistant.components.climate import ClimateEntity
 from homeassistant.components.climate.const import ClimateEntityFeature, HVACMode
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
@@ -25,7 +26,7 @@ async def async_setup_entry(hass, entry, async_add_entities):
 class BestwaySpaThermostat(CoordinatorEntity, ClimateEntity):
     _attr_hvac_modes = [HVACMode.OFF, HVACMode.HEAT]
     _attr_supported_features = ClimateEntityFeature.TARGET_TEMPERATURE
-    _attr_temperature_unit = "°C"
+    _attr_temperature_unit = UnitOfTemperature.CELSIUS
     _attr_min_temp = 20
     _attr_max_temp = 40
 
@@ -54,6 +55,11 @@ class BestwaySpaThermostat(CoordinatorEntity, ClimateEntity):
     @property
     def target_temperature(self):
         return self.coordinator.data.get("temperature_setting")
+
+    @property
+    def temperature_unit(self):
+        unit_code = self.coordinator.data.get("temperature_unit", 1)
+        return UnitOfTemperature.FAHRENHEIT if unit_code == 0 else UnitOfTemperature.CELSIUS
 
     @property
     def hvac_mode(self):
