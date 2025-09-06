@@ -9,7 +9,7 @@ _LOGGER = logging.getLogger(__name__)
 
 
 async def authenticate(session, config):
-    BASE_URL = "https://smarthub-eu.bestwaycorp.com"
+    BASE_URL = "https://" + config["api_host"]
     APPID = "AhFLL54HnChhrxcl9ZUJL6QNfolTIB"
     APPSECRET = "4ECvVs13enL5AiYSmscNjvlaisklQDz7vWPCCWXcEFjhWfTmLT"
 
@@ -24,7 +24,7 @@ async def authenticate(session, config):
     payload = {
         "app_id": APPID,
         "lan_code": "en",
-        "location": "GB",
+        "location": config["location"],
         "push_type": push_type,
         "timezone": "GMT",
         "visitor_id": config["visitor_id"],
@@ -43,7 +43,7 @@ async def authenticate(session, config):
         "accept-language": "en",
         "sign": sign,
         "Authorization": "token",
-        "Host": "smarthub-eu.bestwaycorp.com",
+        "Host": config["api_host"],
         "Connection": "Keep-Alive",
         "User-Agent": "okhttp/4.9.0",
         "Content-Type": "application/json; charset=UTF-8"
@@ -63,11 +63,12 @@ async def authenticate(session, config):
 
 
 class BestwaySpaAPI:
-    BASE_URL = "https://smarthub-eu.bestwaycorp.com"
     APPID = "AhFLL54HnChhrxcl9ZUJL6QNfolTIB"
     APPSECRET = "4ECvVs13enL5AiYSmscNjvlaisklQDz7vWPCCWXcEFjhWfTmLT"
 
     def __init__(self, session: aiohttp.ClientSession, config: dict):
+        self.BASE_URL = "https://" + config["api_host"]
+        self.api_host = config["api_host"]
         self.session = session
         self.token = config["token"]
         self.device_id = config.get("device_id") or config["device_name"]
@@ -88,7 +89,7 @@ class BestwaySpaAPI:
             "accept-language": "en",
             "sign": sign,
             "Authorization": f"token {self.token}",
-            "Host": "smarthub-eu.bestwaycorp.com",
+            "Host": self.api_host,
             "Connection": "Keep-Alive",
             "User-Agent": "okhttp/4.9.0",
             "Content-Type": "application/json; charset=UTF-8"
