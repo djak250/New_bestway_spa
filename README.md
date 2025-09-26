@@ -21,6 +21,9 @@ This Home Assistant integration allows you to control your Bestway SmartHub-enab
   - **Phone A**: with the Bestway Smart Hub app installed and already connected to your spa (used to share the QR code)
   - **Phone B**: used to capture traffic through Charles Proxy (the SSL certificate will be installed on this device)
 
+## On Phone B you must use an older version of the application (Bestway Connect 1.0.4) which you can download from APKPURE in order to be able to sniff the traffic.
+
+
 ### Network
 - PC and both smartphones must be connected to the **same Wi-Fi network**
 
