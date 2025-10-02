@@ -65,7 +65,7 @@ jobs:
         with:
           tag_name: ${{ steps.v.outputs.tag }}
           name: ${{ steps.v.outputs.tag }}
-          files: new_bestway_spa.zip
+          files: New_bestway_spa.zip
           draft: ${{ github.event.inputs.draft }}
           prerelease: ${{ github.event.inputs.prerelease }}
           generate_release_notes: true
