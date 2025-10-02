@@ -58,7 +58,7 @@ jobs:
         shell: bash
         run: |
           cd custom_components/new_bestway_spa
-          zip -r ../../new_bestway_spa.zip ./
+          zip -r ../../New_bestway_spa.zip ./
 
       - name: Créer la release et téléverser l’asset
         uses: softprops/action-gh-release@v2.2.2
