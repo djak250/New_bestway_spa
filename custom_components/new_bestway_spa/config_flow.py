@@ -18,7 +18,9 @@ class ConfigFlow(config_entries.ConfigFlow, domain=DOMAIN):
             vol.Optional("device_id"): str,
             vol.Optional("product_id"): str,
             vol.Optional("push_type", default="fcm"): vol.In(["fcm", "apns"]),
-            vol.Optional("client_id"): str
+            vol.Optional("client_id"): str,
+            vol.Optional("api_host", default="smarthub-eu.bestwaycorp.com"): str,
+            vol.Optional("location", default="GB"): str
         })
 
         return self.async_show_form(step_id="user", data_schema=schema, errors=errors)

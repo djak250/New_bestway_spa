@@ -1,3 +1,4 @@
+from homeassistant.const import UnitOfTemperature
 from homeassistant.components.climate import ClimateEntity
 from homeassistant.components.climate.const import ClimateEntityFeature, HVACMode
 from homeassistant.helpers.update_coordinator import CoordinatorEntity
@@ -23,16 +24,15 @@ async def async_setup_entry(hass, entry, async_add_entities):
 
 
 class BestwaySpaThermostat(CoordinatorEntity, ClimateEntity):
+    has_entity_name = True
     _attr_hvac_modes = [HVACMode.OFF, HVACMode.HEAT]
     _attr_supported_features = ClimateEntityFeature.TARGET_TEMPERATURE
-    _attr_temperature_unit = "°C"
-    _attr_min_temp = 20
-    _attr_max_temp = 40
 
     def __init__(self, coordinator, api, title, device_id, hass):
         super().__init__(coordinator)
         self._api = api
-        self._attr_name = f"{title} Thermostat"
+        self._attr_translation_key = "thermostat"
+        self._attr_translation_placeholders = {"name": f"{title} Thermostat"}
         self._attr_unique_id = f"{device_id}_thermostat"
         self._device_id = device_id
         self.hass = hass
@@ -41,7 +41,8 @@ class BestwaySpaThermostat(CoordinatorEntity, ClimateEntity):
     def device_info(self):
         return {
             "identifiers": {(DOMAIN, self._device_id)},
-            "name": self._attr_name.split(" ")[0],
+            "translation_key": self._attr_translation_key,
+            "translation_placeholders": self._attr_translation_placeholders,
             "manufacturer": "Bestway",
             "model": "Spa",
             "sw_version": self.hass.data[DOMAIN].get("manifest_version", "unknown")
@@ -54,6 +55,21 @@ class BestwaySpaThermostat(CoordinatorEntity, ClimateEntity):
     @property
     def target_temperature(self):
         return self.coordinator.data.get("temperature_setting")
+
+    @property
+    def temperature_unit(self):
+        unit_code = self.coordinator.data.get("temperature_unit", 1)
+        return UnitOfTemperature.FAHRENHEIT if unit_code == 0 else UnitOfTemperature.CELSIUS
+
+    @property
+    def min_temp(self):
+        unit_code = self.coordinator.data.get("temperature_unit", 1)
+        return 68 if unit_code == 0 else 20
+    
+    @property
+    def max_temp(self):
+        unit_code = self.coordinator.data.get("temperature_unit", 1)
+        return 104 if unit_code == 0 else 40
 
     @property
     def hvac_mode(self):
